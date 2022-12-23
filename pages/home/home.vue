@@ -16,13 +16,13 @@
 			<view class="floor-item" v-for="(floor,index) in floorList" :key="index">
 				<image :src="floor.floor_title.image_src" class="floor-title"></image>
 				<view class="floor-image-box">
-					<view class="left-image-box">
+					<navigator class="left-image-box" :url="floor.product_list[0].url">
 						<image :src="floor.product_list[0].image_src" :style="{width:floor.product_list[0].image_width + 'rpx'}" mode="widthFix"></image>
-					</view>
+					</navigator>
 					<view class="right-image-box">
-						<view class="right-image-item" v-for="(rimgae,index2) in floor.product_list" :key="index2" v-if="index2 !== 0">
+						<navigator class="right-image-item" v-for="(rimgae,index2) in floor.product_list" :key="index2" v-if="index2 !== 0" :url="rimage.url">
 							<image :src="rimgae.image_src" mode="widthFix" :style="{width:rimgae.image_width + 'rpx'}"></image>
-						</view>
+						</navigator>
 					</view>
 				</view>
 			</view>
@@ -62,6 +62,13 @@
 			async getFloorList() {
 				const {data: result} = await uni.$http.get('/api/public/v1/home/floordata')
 				if (result.meta.status !== 200) return uni.$showMsg()
+				
+				result.message.forEach(floor => {
+					floor.product_list.forEach(prod => {
+						prod.url = '/subpkg/goods_list/goods_list?' + prod.navigator_url.split('?')[1]
+					})
+				})
+				
 				this.floorList = result.message
 			},
 			// 分类导航点击事件回调
