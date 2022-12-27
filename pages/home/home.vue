@@ -1,5 +1,8 @@
 <template>
 	<view>
+		<view class="search">
+			<my-search @click="gotoSearch"></my-search>
+		</view>
 		<swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" class="header-swiper">
 			<swiper-item v-for="img in swiperList" :key="img.goods_id">
 				<navigator :url="`/subpkg/goods_detail/goods_detail?goods_id=${img.goods_id}`">
@@ -20,8 +23,8 @@
 						<image :src="floor.product_list[0].image_src" :style="{width:floor.product_list[0].image_width + 'rpx'}" mode="widthFix"></image>
 					</navigator>
 					<view class="right-image-box">
-						<navigator class="right-image-item" v-for="(rimgae,index2) in floor.product_list" :key="index2" v-if="index2 !== 0" :url="rimage.url">
-							<image :src="rimgae.image_src" mode="widthFix" :style="{width:rimgae.image_width + 'rpx'}"></image>
+						<navigator class="right-image-item" v-for="(rimage,index2) in floor.product_list" :key="index2" v-if="index2 !== 0" :url="rimage.url">
+							<image :src="rimage.image_src" mode="widthFix" :style="{width:rimage.image_width + 'rpx'}"></image>
 						</navigator>
 					</view>
 				</view>
@@ -76,6 +79,12 @@
 				if (nav.name == '分类') {
 					uni.switchTab({ url: '/pages/cate/cate' })
 				}
+			},
+			// 跳转搜索页面
+			gotoSearch() {
+				uni.navigateTo({
+					url: '/subpkg/search/search'
+				})
 			}
 		},
 		onLoad() {
@@ -87,6 +96,11 @@
 </script>
 
 <style lang="scss">
+	.search {
+		position: sticky;
+		top: 0;
+		z-index: 100;
+	}
 	.header-swiper {
 		height: 330rpx;
 		swiper-item {

@@ -1,5 +1,6 @@
 <template>
 	<view>
+		<my-search @click="gotoSearch"></my-search>
 		<view class="scroll-view-container">
 			<scroll-view scroll-y class="left-scroll-view" :style="{height: wh + 'px'}">
 				<view 
@@ -59,13 +60,19 @@
 				uni.navigateTo({
 					url: '/subpkg/goods_list/goods_list?cid=' + cate3.cat_id
 				})
+			},
+			// 跳转搜索页面
+			gotoSearch() {
+				uni.navigateTo({
+					url: '/subpkg/search/search'
+				})
 			}
 		},
 		onLoad() {
 			// 获取当前系统的信息
 			const sysInfo = uni.getSystemInfoSync()
-			// 为 wh 窗口可用高度动态赋值
-			this.wh = sysInfo.windowHeight
+			// 为 wh 窗口可用高度动态赋值(56 为搜索栏高度)
+			this.wh = sysInfo.windowHeight - 56
 			this.getCateList()
 		}
 	}
