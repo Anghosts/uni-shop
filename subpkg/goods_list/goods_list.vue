@@ -1,18 +1,11 @@
 <template>
 	<view class="goods-list">
-		<view class="goods-item"  v-for="(goods,index) in goodsList" :key="goods.cat_id" @click="gotoDetail(goods)">
-			<view class="goods-item-left">
-				<image :src="goods.goods_small_logo || defaultPic"></image>
-			</view>
-			<view class="goods-item-right">
-				<view class="goods-name">
-					<text>{{goods.goods_name}}</text>
-				</view>
-				<view class="goods-price">
-					<text>&yen; {{goods.goods_price | tofixed}}</text>
-				</view>
-			</view>
-		</view>
+		<my-goods 
+			:goods="goods" 
+			v-for="(goods,index) in goodsList" 
+			:key="i"
+			@click="gotoDetail(goods)"
+		></my-goods>
 	</view>
 </template>
 
@@ -28,7 +21,6 @@
 				},
 				goodsList: [], // 商品列表数据
 				total: 0, // 总数量
-				defaultPic: 'https://img3.doubanio.com/f/movie/8dd0c794499fe925ae2ae89ee30cd225750457b4/pics/movie/celebrity-default-medium.png', // 默认显示的图片
 				isLoading: false, // 请求数据的状态
 			};
 		},
@@ -49,12 +41,6 @@
 				uni.navigateTo({
 					url: '/subpkg/goods_detail/goods_detail?goods_id=' + goods.goods_id
 				})
-			}
-		},
-		filters: {
-			// 把数字处理为带两位小数点的数字
-			tofixed(num) {
-				return Number(num).toFixed(2)
 			}
 		},
 		onLoad(options) {

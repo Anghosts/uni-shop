@@ -44,6 +44,8 @@
 </template>
 
 <script>
+	import { mapState,mapMutations,mapGetters } from 'vuex'
+	
 	export default {
 		data() {
 			return {
@@ -55,7 +57,7 @@
 				}, {
 					icon: 'cart',
 					text: '购物车',
-					info: 2
+					info: 0
 				}],
 				// 右侧按钮组的配置对象
 				buttonGroup: [{
@@ -71,6 +73,8 @@
 			};
 		},
 		methods: {
+			...mapMutations('m_cart', ['addToCart']),
+			
 			async getGoodsDetail(goods_id) {
 				const {data:result} = await uni.$http.get('/api/public/v1/goods/detail', { goods_id })
 				if (result.meta.status !== 200) return uni.$showMsg()
@@ -97,7 +101,34 @@
 			},
 			// 底部导航栏右侧按钮点击事件
 			buttonClick(e) {
-				console.log(e);
+				// 加入购物车 按钮
+				if (e.content.text === '加入购物车') {
+					const goods = {
+						goods_id: this.goods_info.goods_id,       // 商品的Id
+						goods_name: this.goods_info.goods_name,   // 商品的名称
+						goods_price: this.goods_info.goods_price, // 商品的价格
+						goods_count: 1,                           // 商品的数量
+						goods_small_logo: this.goods_info.goods_small_logo, // 商品的图片
+						goods_state: true                         // 商品的勾选状态
+					}
+					this.addToCart(goods)
+				}
+			}
+		},
+		computed: {
+			...mapState('m_cart', ['cart']),
+			...mapGetters('m_cart', ['total'])
+		},
+		watch: {
+			// 监听购物车的商品总数量的值
+			total: {
+				immediate: true,
+				handler(newVal) {
+					const findResult = this.options.find(item => item.text === '购物车')
+					if (findResult) {
+						findResult.info = newVal
+					}
+				}
 			}
 		},
 		onLoad(options) {
