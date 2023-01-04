@@ -8,13 +8,20 @@ $http.baseUrl = 'https://www.uinav.com'
 
 // 请求开始之前做一些事情
 $http.beforeRequest = function (options) {
-  wx.showLoading({
+  uni.showLoading({
 		title: '加载中...',
 	})
+	
+	if (options.url.indexOf('/my/') !== -1) {
+		// 添加请求头
+		options.header ={
+			Authorization: store.state.m_user.token
+		}
+	}
 }
 // 请求完成之后做一些事情
 $http.afterRequest = function () {
-  wx.hideLoading()
+  uni.hideLoading()
 }
 
 // 提示消息

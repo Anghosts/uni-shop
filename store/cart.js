@@ -15,6 +15,7 @@ export default {
 				// 存在则添加数量
 				findResult.goods_count++
 			}
+			uni.$showMsg('已添加至购物车中')
 			
 			this.commit('m_cart/saveToStorage')
 		},

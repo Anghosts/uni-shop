@@ -61,6 +61,7 @@
 			countChangeHandler(goods) {
 				this.updateGoodsCount(goods)
 			},
+			// 删除商品
 			swipeActionClickHandler(goods) {
 				this.removeGoodsById(goods.goods_id)
 			}

@@ -20,7 +20,7 @@
 					<view class="cate-lv2-title">/ {{cate2.cat_name}} /</view>
 					<view class="cate-lv3-list">
 						<view class="cate-lv3-item" v-for="cate3 in cate2.children" :key="cate3.cat_id" @click="gotoGoodsList(cate3)">
-							<image :src="cate3.cat_icon"></image>
+							<image :src="cate3.cat_icon.replace('dev', 'web')"></image>
 							<text>{{cate3.cat_name}}</text>
 						</view>
 					</view>
@@ -31,7 +31,10 @@
 </template>
 
 <script>
+	import badgeMix from '@/mixins/tabbar-badge.js'
+	
 	export default {
+		mixins: [badgeMix],
 		data() {
 			return {
 				active: 0, // 选中的分类项
@@ -128,7 +131,6 @@
 					image {
 						width: 60px;
 						height: 60px;
-						border: 1px solid #ccc;
 					}
 					text {
 						margin-top: 5px;
